@@ -1,5 +1,4 @@
 
-// Full portfolio component (A: includes contact form)
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
@@ -7,12 +6,13 @@ const fadeUp = {
   hidden: { opacity: 0, y: 20 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
+
 const stagger = { show: { transition: { staggerChildren: 0.08 } } };
 
 function useKey(k: string, handler: () => void) {
   useEffect(() => {
     const on = (e: KeyboardEvent) => {
-      const key = (e.key || (e as any).code || '').toLowerCase()
+      const key = (e.key || (e as any).code || "").toLowerCase();
       if (key === k.toLowerCase()) {
         e.preventDefault();
         handler();
@@ -160,8 +160,8 @@ export default function Portfolio() {
     youtube: "https://youtube.com/",
     email: "mailto:Montukeshwar20@gmail.com?subject=Hi%20Montukeshwar!",
     whatsapp: "https://wa.me/918964879725",
-    resume: "/resume.pdf",
-    phone: "tel:+918964879725"
+    resume: "resume.pdf", // relative so it works on GitHub Pages base
+    phone: "tel:+918964879725",
   };
 
   const quickLinks = [
@@ -253,12 +253,14 @@ export default function Portfolio() {
     el?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
+  // Smoke tests only in dev
   useEffect(() => {
+    if (import.meta.env.MODE === "production") return;
     try {
       console.assert(Array.isArray(projects) && projects.length >= 3, "Projects should contain at least 3 items");
       console.assert(quickLinks.some(l => l.label.includes("Download Résumé")), "QuickLinks should include résumé download");
       console.assert(Object.keys(socials).includes("youtube"), "Socials should include YouTube");
-      console.assert(experience[0].points.every(p => typeof p === "string" && !/\\r?\\n/.test(p)), "Experience bullet points should not contain newlines");
+      console.assert(experience[0].points.every(p => typeof p === "string" && !/\r?\n/.test(p)), "Experience bullet points should not contain newlines");
       console.assert(testimonials.length > 0, "Testimonials should not be empty");
       console.assert(skills.length >= 4, "Skills should have at least 4 entries");
       console.assert(projects.every(pr => /^https?:\/\/.*/.test(pr.link)), "Project links should be absolute URLs");
@@ -274,7 +276,7 @@ export default function Portfolio() {
       <CursorDot />
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} links={quickLinks} />
 
-      {/* Backgrounds */}
+      {/* Background: gradient mesh + grid */}
       <div aria-hidden className="pointer-events-none fixed inset-0 [background:radial-gradient(1200px_600px_at_20%_-10%,rgba(59,130,246,.15),transparent),radial-gradient(800px_500px_at_90%_20%,rgba(236,72,153,.12),transparent),radial-gradient(900px_600px_at_50%_120%,rgba(16,185,129,.10),transparent)]" />
       <div aria-hidden className="pointer-events-none fixed inset-0 opacity-[.18] [background-image:linear-gradient(rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.06)_1px,transparent_1px)] [background-size:24px_24px,24px_24px]" />
 
@@ -303,9 +305,105 @@ export default function Portfolio() {
         </div>
       </header>
 
-      {/* Hero, sections, etc. (same as previous cell) */}
-      {/* For brevity, we keep content concise here. */}
+      {/* Hero */}
+      <section className="relative overflow-hidden">
+        {/* floating blobs */}
+        <motion.div aria-hidden className="absolute -top-24 -right-24 h-72 w-72 rounded-full blur-3xl bg-fuchsia-500/20" animate={{ y: [0, -20, 0], scale: [1, 1.06, 1] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
+        <motion.div aria-hidden className="absolute top-36 -left-24 h-72 w-72 rounded-full blur-3xl bg-sky-500/20" animate={{ y: [0, 18, 0], scale: [1, 1.05, 1] }} transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }} />
 
+        <div className="mx-auto max-w-6xl px-4 py-24 sm:py-28 flex flex-col items-center text-center">
+          <motion.p variants={fadeUp} initial="hidden" animate="show" className="text-xs uppercase tracking-widest text-neutral-400">Hello, I’m</motion.p>
+          <motion.h1 variants={fadeUp} initial="hidden" animate="show" className="mt-2 text-4xl sm:text-6xl font-bold tracking-tight">Montukeshwar Vaishnaw</motion.h1>
+          <motion.p variants={fadeUp} initial="hidden" animate="show" className="mt-4 max-w-2xl text-neutral-300">
+            Developer — I build and innovate products that turn ideas into real, usable software. I love shipping fast, learning from users, and polishing the details.
+          </motion.p>
+          <motion.div variants={stagger} initial="hidden" animate="show" className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <motion.button variants={fadeUp} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} onClick={() => scrollTo("about")} className="rounded-xl px-5 py-3 bg-white text-neutral-900 font-medium shadow-[0_0_0_0_rgba(255,255,255,0.4)] hover:shadow-[0_0_0_6px_rgba(255,255,255,0.08)] transition-shadow">Know more about me</motion.button>
+            <motion.a variants={fadeUp} href="#contact" onClick={(e) => { e.preventDefault(); scrollTo("contact"); }} className="rounded-xl px-5 py-3 border border-neutral-700 hover:border-neutral-500" whileHover={{ y: -1 }} whileTap={{ y: 0 }}>Contact Me</motion.a>
+          </motion.div>
+
+          {/* Socials */}
+          <motion.div variants={stagger} initial="hidden" animate="show" className="mt-8 flex flex-wrap gap-4 text-sm text-neutral-300">
+            <motion.a variants={fadeUp} className="hover:text-white" href={socials.github} target="_blank">GitHub</motion.a>
+            <motion.a variants={fadeUp} className="hover:text-white" href={socials.linkedin} target="_blank">LinkedIn</motion.a>
+            <motion.a variants={fadeUp} className="hover:text-white" href={socials.youtube} target="_blank">YouTube</motion.a>
+            <motion.a variants={fadeUp} className="hover:text-white" href={socials.email}>Email</motion.a>
+            <motion.a variants={fadeUp} className="hover:text-white" href={socials.whatsapp} target="_blank">WhatsApp</motion.a>
+          </motion.div>
+
+          {/* Stats strip */}
+          <div className="mt-12 grid grid-cols-3 gap-3 w-full max-w-3xl">
+            {[
+              { k: "+ projects", v: 18 },
+              { k: "yrs building", v: 5 },
+              { k: "avg. response", v: "<24h" },
+            ].map((s, idx) => (
+              <div key={idx} className="rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4 text-center">
+                <div className="text-2xl font-semibold">{s.v}</div>
+                <div className="text-xs text-neutral-400 mt-1">{s.k}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* marquee badges */}
+          <div className="mt-12 relative w-full overflow-hidden">
+            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-neutral-950 to-transparent pointer-events-none"/>
+            <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-neutral-950 to-transparent pointer-events-none"/>
+            <motion.div initial={{ x: 0 }} animate={{ x: [0, -800] }} transition={{ repeat: Infinity, duration: 18, ease: "linear" }} className="flex gap-3 whitespace-nowrap">
+              {["Full‑stack", "AI/RAG", "Automation", "Next.js", "FastAPI", "Design Systems", "Perf", "Accessibility"].map((b, i) => (
+                <span key={i} className="px-3 py-1 rounded-full bg-neutral-900/60 border border-neutral-800 text-xs">{b}</span>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-neutral-700/60 to-transparent" />
+      </section>
+
+      {/* About */}
+      <section id="about" className="mx-auto max-w-6xl px-4 py-20 border-t border-neutral-900/60">
+        <motion.h2 variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="text-2xl sm:text-3xl font-semibold">About Me</motion.h2>
+        <motion.p variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="mt-4 max-w-3xl text-neutral-300">I’m a product-minded developer focused on building reliable, delightful software. My work spans full‑stack web, AI integrations, and automation. I enjoy owning problems end‑to‑end: from figuring out the real user need to shipping a maintainable solution.</motion.p>
+
+        {/* Skills grid */}
+        <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {skills.map((s, i) => (
+            <div key={i} className="rounded-xl border border-neutral-800 bg-neutral-900/40 px-4 py-3 text-sm text-neutral-200">{s}</div>
+          ))}
+        </div>
+      </section>
+
+      {/* Experience */}
+      <section id="experience" className="mx-auto max-w-6xl px-4 py-20 border-t border-neutral-900/60">
+        <motion.h2 variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="text-2xl sm:text-3xl font-semibold">My Experience</motion.h2>
+        <div className="mt-8 grid gap-6">
+          {experience.map((job, i) => (
+            <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} key={i} className="rounded-2xl border border-neutral-800 p-6 bg-neutral-900/30 hover:bg-neutral-900/50 transition shadow-[inset_0_0_0_1px_rgba(255,255,255,0.03)]">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                <h3 className="text-lg font-medium">{job.role}</h3>
+                <span className="text-sm text-neutral-400">{job.period}</span>
+              </div>
+              <ul className="mt-4 list-disc pl-5 text-neutral-300 space-y-2">
+                {job.points.map((p, j) => (
+                  <li key={j}>{p}</li>
+                ))}
+              </ul>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Logos strip */}
+        <div className="mt-12 rounded-2xl border border-neutral-800 bg-neutral-900/30 p-4">
+          <div className="text-xs uppercase tracking-wide text-neutral-400 mb-4">Trusted by teams at</div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
+            {logos.map((name, i) => (
+              <div key={i} className="h-10 rounded-lg border border-neutral-800 bg-neutral-950/60 flex items-center justify-center text-neutral-400 text-sm">{name}</div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Work */}
       <section id="work" className="mx-auto max-w-6xl px-4 py-20 border-t border-neutral-900/60">
         <motion.h2 variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="text-2xl sm:text-3xl font-semibold">My Work</motion.h2>
         <p className="mt-2 text-neutral-400">A few past projects. Click to open.</p>
@@ -330,29 +428,89 @@ export default function Portfolio() {
             </TiltCard>
           ))}
         </div>
+
+        {/* Testimonials */}
+        <div className="mt-12">
+          <TestimonialCarousel items={testimonials} />
+        </div>
       </section>
 
+      {/* Services */}
+      <section id="services" className="mx-auto max-w-6xl px-4 py-20 border-t border-neutral-900/60">
+        <motion.h2 variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="text-2xl sm:text-3xl font-semibold">Services</motion.h2>
+        <p className="mt-2 text-neutral-400">Available for freelance client work.</p>
+        <div className="mt-8 grid md:grid-cols-3 gap-6">
+          {services.map((s, i) => (
+            <motion.div key={i} variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, margin: "-80px" }} className="rounded-2xl border border-neutral-800 p-6 bg-neutral-900/30 hover:bg-neutral-900/50 transition shadow-[0_10px_40px_-20px_rgba(0,0,0,0.8)]" whileHover={{ scale: 1.02 }}>
+              <h3 className="font-medium">{s.title}</h3>
+              <p className="mt-2 text-neutral-300">{s.blurb}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* FAQ */}
+        <div className="mt-12 grid md:grid-cols-2 gap-6">
+          {faqs.map((f, i) => (
+            <details key={i} className="rounded-2xl border border-neutral-800 bg-neutral-900/30 p-5">
+              <summary className="cursor-pointer select-none font-medium">{f.q}</summary>
+              <p className="mt-2 text-neutral-300">{f.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      {/* Pre-contact CTA banner */}
+      <section className="mx-auto max-w-6xl px-4 pb-10">
+        <div className="rounded-2xl border border-neutral-800 bg-gradient-to-br from-neutral-900/60 to-neutral-900/20 p-8 text-center">
+          <h3 className="text-xl sm:text-2xl font-semibold">Have an idea you want to ship?</h3>
+          <p className="mt-2 text-neutral-300">Let’s scope it in 30 minutes. No strings attached.</p>
+          <div className="mt-4 flex items-center justify-center gap-3">
+            <a href="#contact" onClick={(e)=>{e.preventDefault();document.getElementById('contact')?.scrollIntoView({behavior:'smooth'})}} className="rounded-xl px-5 py-3 bg-white text-neutral-900 font-medium">Book an intro</a>
+            <a href={socials.resume} download className="rounded-xl px-5 py-3 border border-neutral-700 hover:border-neutral-500">Download résumé</a>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact */}
       <section id="contact" className="mx-auto max-w-6xl px-4 py-20 border-t border-neutral-900/60">
         <motion.h2 variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="text-2xl sm:text-3xl font-semibold">Contact Me</motion.h2>
+        <motion.p variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="mt-2 text-neutral-300 max-w-2xl">Have a project in mind, or want to collaborate? I’d love to hear from you.</motion.p>
         <div className="mt-8 grid md:grid-cols-2 gap-6">
-          <motion.form variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} onSubmit={(e) => { e.preventDefault(); window.location.href = "mailto:Montukeshwar20@gmail.com?subject=Hi%20Montukeshwar!"; }} className="rounded-2xl border border-neutral-800 p-6 bg-neutral-900/30">
+          <motion.form variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} onSubmit={(e) => { e.preventDefault(); window.location.href = socials.email; }} className="rounded-2xl border border-neutral-800 p-6 bg-neutral-900/30">
             <label className="block text-sm">Name</label>
-            <input className="mt-1 w-full rounded-xl bg-neutral-900 border border-neutral-800 px-3 py-2" placeholder="Your name" />
+            <input className="mt-1 w-full rounded-xl bg-neutral-900 border border-neutral-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-600" placeholder="Your name" />
             <label className="block text-sm mt-4">Email</label>
-            <input type="email" className="mt-1 w-full rounded-xl bg-neutral-900 border border-neutral-800 px-3 py-2" placeholder="you@example.com" />
+            <input type="email" className="mt-1 w-full rounded-xl bg-neutral-900 border border-neutral-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-600" placeholder="you@example.com" />
             <label className="block text-sm mt-4">Message</label>
-            <textarea rows={5} className="mt-1 w-full rounded-xl bg-neutral-900 border border-neutral-800 px-3 py-2" placeholder="Tell me about your project…" />
+            <textarea rows={5} className="mt-1 w-full rounded-xl bg-neutral-900 border border-neutral-800 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-600" placeholder="Tell me about your project…"></textarea>
             <button type="submit" className="mt-4 rounded-xl px-5 py-3 bg-white text-neutral-900 font-medium">Send Message</button>
           </motion.form>
           <motion.div variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="rounded-2xl border border-neutral-800 p-6 bg-neutral-900/30">
             <h3 className="font-medium">Prefer quick chat?</h3>
+            <p className="mt-2 text-neutral-300">Reach me on any of these:</p>
             <ul className="mt-4 space-y-2 text-neutral-300">
-              <li><a className="hover:text-white" href="mailto:Montukeshwar20@gmail.com?subject=Hi%20Montukeshwar!">Email</a></li>
-              <li><a className="hover:text-white" href="tel:+918964879725">Call</a></li>
+              <li><a className="hover:text-white" href={socials.email}>Email</a></li>
+              <li><a className="hover:text-white" href={socials.phone}>Call</a></li>
+              <li><a className="hover:text-white" href={socials.whatsapp} target="_blank">WhatsApp</a></li>
+              <li><a className="hover:text-white" href={socials.github} target="_blank">GitHub</a></li>
+              <li><a className="hover:text-white" href={socials.youtube} target="_blank">YouTube</a></li>
             </ul>
+            <a href={socials.resume} download className="mt-6 inline-block rounded-xl px-5 py-3 border border-neutral-700 hover:border-neutral-500">Download Résumé (PDF)</a>
           </motion.div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="border-t border-neutral-900/60 py-10">
+        <div className="mx-auto max-w-6xl px-4 text-sm text-neutral-500 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} Montukeshwar Vaishnaw. All rights reserved.</p>
+          <div className="flex gap-4">
+            <a className="hover:text-neutral-300" href="#about" onClick={(e)=>{e.preventDefault();document.getElementById('about')?.scrollIntoView({behavior:'smooth'})}}>About</a>
+            <a className="hover:text-neutral-300" href="#work" onClick={(e)=>{e.preventDefault();document.getElementById('work')?.scrollIntoView({behavior:'smooth'})}}>Work</a>
+            <a className="hover:text-neutral-300" href="#contact" onClick={(e)=>{e.preventDefault();document.getElementById('contact')?.scrollIntoView({behavior:'smooth'})}}>Contact</a>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
