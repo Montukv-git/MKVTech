@@ -1,17 +1,36 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      # Use npm install (works without a lockfile)
+
+      # Use npm install since you don't have a package-lock.json
       - run: npm install
+
+      # Build the Vite project (outputs to dist/)
       - run: npm run build
+
+      # Upload the built site as an artifact for Pages
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
