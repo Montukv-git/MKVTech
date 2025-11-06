@@ -261,7 +261,7 @@ export default function Portfolio() {
       console.assert(experience[0].points.every(p => typeof p === "string" && !/\\r?\\n/.test(p)), "Experience bullet points should not contain newlines");
       console.assert(testimonials.length > 0, "Testimonials should not be empty");
       console.assert(skills.length >= 4, "Skills should have at least 4 entries");
-      console.assert(projects.every(pr => /^https?:\\/\\//.test(pr.link)), "Project links should be absolute URLs");
+      console.assert(projects.every(pr => /^https?:\/\/.*/.test(pr.link)), "Project links should be absolute URLs");
       console.assert(socials.email.startsWith("mailto:"), "Email link should be a mailto:");
       console.assert(document.querySelector('#contact') && document.querySelector('#work'), "Contact and Work sections should exist in DOM");
     } catch (e) {
