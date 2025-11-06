@@ -503,7 +503,7 @@ export default function Portfolio() {
       {/* Footer */}
       <footer className="border-t border-neutral-900/60 py-10">
         <div className="mx-auto max-w-6xl px-4 text-sm text-neutral-500 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p>© {new Date().getFullYear()} Montukeshwar Vaishnaw. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} MKVtech.pvt.lt. All rights reserved.</p>
           <div className="flex gap-4">
             <a className="hover:text-neutral-300" href="#about" onClick={(e)=>{e.preventDefault();document.getElementById('about')?.scrollIntoView({behavior:'smooth'})}}>About</a>
             <a className="hover:text-neutral-300" href="#work" onClick={(e)=>{e.preventDefault();document.getElementById('work')?.scrollIntoView({behavior:'smooth'})}}>Work</a>
