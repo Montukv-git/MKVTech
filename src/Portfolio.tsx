@@ -175,11 +175,11 @@ export default function Portfolio() {
 
   const projects = [
     {
-      title: "Smart Task Automator",
-      description: "A no-code automation tool that connects APIs and browser actions to build mini workflows.",
-      image: "https://placehold.co/800x520/png",
+      title: "Finler AI",
+      description: "A website that help you achive your financial goals by providing AI analysis over your budgeting and suggest invements to achive your goals",
+      image: "https://i.postimg.cc/1472BCPV/finler-banner.png",
       link: "https://example.com/project-automator",
-      tags: ["TypeScript", "Next.js", "Puppeteer"],
+      tags: ["LLM", "FastAPI", "Typescript"],
     },
     {
       title: "Realtime Chat Ops",
