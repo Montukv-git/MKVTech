@@ -156,8 +156,8 @@ export default function Portfolio() {
 
   const socials = {
     github: "https://github.com/Montukv-git",
-    linkedin: "https://www.linkedin.com/",
-    youtube: "https://youtube.com/",
+    linkedin: "https://www.linkedin.com/in/montukeshwar-vaishnaw-199054164/",
+    youtube: "https://www.youtube.com/@Montukv",
     email: "mailto:Montukeshwar20@gmail.com?subject=Hi%20Montukeshwar!",
     whatsapp: "https://wa.me/918964879725",
     resume: "resume.pdf", // relative so it works on GitHub Pages base
