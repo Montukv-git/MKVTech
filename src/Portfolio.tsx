@@ -205,20 +205,21 @@ export default function Portfolio() {
 
   const experience = [
     {
-      role: "Product-Focused Developer",
-      period: "2022 — Present",
+      role: "Freelance Engineer",
+      period: "2024 — Present",
       points: [
-        "Prototype → validate → productionize modern web apps and AI tooling.",
-        "Ship autonomously: design systems, own code quality, and measure outcomes.",
-        "Work with startups & SMEs to replace manual tasks with reliable automations.",
+        "Designed and deployed custom web applications and APIs for small businesses and startups using Python, JavaScript, and FastAPI.",
+        "Integrated third-party APIs and automation tools to streamline client workflows and reduce manual effort.",
+        "Delivered end-to-end solutions — from planning and development to deployment and client support — ensuring reliability and performance.",
       ],
     },
     {
-      role: "Freelance Engineer",
-      period: "2019 — 2022",
+      role: "Backend Developer – GCC App & Website",
+      period: "2021 — 2023",
       points: [
-        "Built custom dashboards, e‑commerce features, and API backends.",
-        "Improved performance and accessibility across multiple client apps.",
+        "Developed and maintained scalable REST APIs using Ruby on Rails and Python for GCC app and website.",
+        "Managed AWS infrastructure (S3, EC2) to ensure high performance, scalability, and reliability.",
+        "Optimized PostgreSQL databases for large-scale data handling, scraping, and analytics.",
       ],
     },
   ];
