@@ -225,10 +225,10 @@ export default function Portfolio() {
   ];
 
   const skills = [
-    "JavaScript/TypeScript",
-    "Next.js / React",
-    "Node.js / FastAPI",
-    "Postgres / Prisma",
+    "Python / Javascript / Ruby",
+    "ML / IOT",
+    "Django / FastAPI / ROR",
+    "Postgres / MySql",
     "Auth / RBAC",
     "Testing / CI/CD",
     "LLM / RAG / Agents",
